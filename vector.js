@@ -10,8 +10,8 @@ function vector(_x, _y) {
     return vector(x - v.x(), y - v.y())
   }
 
-  function multiply(lambda) {
-    return vector(lambda * _x, lambda * y)
+  function scale(lambda) {
+    return vector(lambda * _x, lambda * _y)
   }
 
   function divide(lambda) {
@@ -22,7 +22,11 @@ function vector(_x, _y) {
     return divide(1 / length())
   }
 
-  return { x, y, length, substract, multiply, divide, normalize }
+  function toJSON() {
+    return `{"x": ${_x}, "y": ${_y}}`
+  }
+
+  return { x, y, length, substract, scale, divide, normalize, toJSON }
 }
 
 vector.zero = function() { return vector(0, 0) }

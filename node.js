@@ -1,5 +1,8 @@
-
 function newNode(_id, _position) {
+
+  checkNotNull(_id)
+  checkNotNull(_position)
+
   let links = []
 
   function id() { return _id }

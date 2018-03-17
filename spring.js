@@ -13,7 +13,7 @@ function newSpring(_link) {
     if (toOutside.length() < MathUtil.EPSILON) return vector.zero()
     return toOutside
       .normalize()
-      .multiply(deltaLength)
+      .scale(deltaLength)
   }
 
   function stabilize(elapsedTimeSecond) {
