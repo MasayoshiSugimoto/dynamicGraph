@@ -1,4 +1,8 @@
 function vector(_x, _y) {
+
+	checkNotNull(_x)
+	checkNotNull(_y)
+
   function x() { return _x }
   function y() { return _y }
 

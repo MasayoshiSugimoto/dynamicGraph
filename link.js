@@ -9,5 +9,12 @@ function newLink(_startNode, _endNode) {
   function startPoint() { return _startNode.position() }
   function endPoint() { return _endNode.position() }
 
-  return { startNode, endNode, startPoint, endPoint }
+	function toJSON() {
+		return "{"
+			+ `"_startNode":${_startNode.id()},`
+			+ `"_endNode":${_endNode.id()}`
+			+ "}"
+	}
+
+  return { startNode, endNode, startPoint, endPoint, toJSON }
 }

@@ -1,27 +1,34 @@
+function newGraph(_graphDefinition) {
 
-function graph() {
-  const _nodes = []
-  const _links = []
+	checkNotNull(_graphDefinition.nodes)
+	_graphDefinition.nodes.forEach(validateNode)
+	checkNotNull(_graphDefinition.links)
+	_graphDefinition.links.forEach(validateLink)
 
-  const idGenerator = () => {
-    let id = 0
-    return () => {
-      id++
-      return id
-    }
-  }()
+	//Create nodes and links
+	const _nodes = _graphDefinition.nodes.map(node =>
+		newNode(node.id, vector(node.x, node.y))
+	)
+	const _links = _graphDefinition.links.map(link =>
+		newLink(getNode(link.start), getNode(link.end))
+	)
+
+	function validateNode(node) {
+		checkNotNull(node.id)
+		checkNotNull(node.x)
+		checkNotNull(node.y)
+	}
+
+	function validateLink(link) {
+		checkNotNull(link.start)
+		checkNotNull(link.end)
+	}
 
   function getNode(nodeId) {
     const foundNodes = _nodes.filter(node => node.id() === nodeId)
-    if (foundNodes === 0) return null
-    if (foundNodes === 1) return _nodes[0]
+    if (foundNodes.length === 0) return null
+    if (foundNodes.length === 1) return _nodes[nodeId]
     assert(true)
-  }
-
-  function addNode() {
-    const id = idGenerator()
-    _nodes.push(newNode(id, vector.random()))
-    return id
   }
 
   function setNode(node) {
@@ -30,11 +37,16 @@ function graph() {
       .concat([node])
   }
 
-  function addLink(nodeId1, nodeId2) {
-    _links.push(newLink(getNode(nodeId1), getNode(nodeId2)))
-  }
-
   function links() { return newList(_links) }
 
-  return { addNode, setNode, addLink, links }
+	function toJSON() {
+		const nodes = _nodes.map(n => n.toJSON())
+		const links = _links.map(l => l.toJSON())
+		return "{"
+			+ `"nodes":${nodes}`
+			+ `"links":${links}`
+			+ "}"
+	}
+
+  return { setNode, links, toJSON }
 }
