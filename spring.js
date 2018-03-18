@@ -1,4 +1,3 @@
-
 function newSpring(_link) {
 
   const stabilityLength = 1.0
@@ -9,7 +8,7 @@ function newSpring(_link) {
   }
 
   function displacement(applicationPoint, otherEnd, deltaLength) {
-    const toOutside = otherEnd.substract(applicationPoint)
+    const toOutside = applicationPoint.substract(otherEnd)
     if (toOutside.length() < MathUtil.EPSILON) return vector.zero()
     return toOutside
       .normalize()
