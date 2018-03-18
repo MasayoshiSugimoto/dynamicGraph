@@ -47,7 +47,11 @@ function vector(_x, _y) {
 	}
 }
 
-vector.zero = function() { return vector(0, 0) }
+vector.zero = (() => {
+	const zero = vector(0, 0)
+	return () => zero
+})()
+
 vector.random = function() { return vector(Math.random(), Math.random()) }
 
 vector.distance = function(v1, v2) {

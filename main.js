@@ -10,14 +10,30 @@ function main() {
     }
   })()
 
+	const createLinks = (nodeNumber) => {
+		const result = []
+		for (let i = 0; i < nodeNumber; i++) {
+			for (let j = i + 1; j < nodeNumber; j++) {
+				if (Math.random() < 0.9) continue
+				result.push({ start: i, end: j })
+			}
+		}
+		return result
+	}
+
+	const createNodes = (nodeNumber) => {
+		const random = () => Math.random() + 1
+		const result = []
+		for (let i = 0; i < nodeNumber; i++) {
+			result.push({ id: i, x: random(), y: random() })
+		}
+		return result
+	}
+
+	const nodeNumber = 20
 	const graph = newGraph({
-		nodes: [
-			{ id: 0, x: 0.1, y: 0.2 },
-			{ id: 1, x: 1, y: 0.3 }
-		],
-		links: [
-			{ start: 0, end: 1 }
-		]
+		nodes: createNodes(20),
+		links: createLinks(20)
 	})
 
   const vectorProjector = newVectorProjector(newUnitConverter())
@@ -30,9 +46,13 @@ function main() {
 		return () => screen.draw(newList([linkDrawers, nodeDrawers]).flatten())
 	})(screen())
 
+	let lastTimeMillisecond = 0
 	const updateFrame = () => {
-		window.requestAnimationFrame(elapsedTimeMilliseconds => {
-			stabilizeGraph(graph, elapsedTimeMilliseconds / 1000)
+		window.requestAnimationFrame(timeStampMillisecond => {
+			const elapsedTimeMillisecond = timeStampMillisecond - lastTimeMillisecond
+			const elapsedTimeSecond = Math.max(elapsedTimeMillisecond, 50) / 1000
+			lastTimeMillisecond = timeStampMillisecond
+			stabilizeGraph(graph, elapsedTimeSecond)
 			draw()
 			updateFrame()
 		});

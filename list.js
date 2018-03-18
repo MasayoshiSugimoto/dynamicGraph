@@ -3,6 +3,8 @@ function newList(_array) {
 
 	checkArray(_array)
 
+	function length() { return _array.length }
+
 	function forEach(lambda) {
 		_array.forEach(lambda)
 	}
@@ -23,5 +25,5 @@ function newList(_array) {
     return newList(_array.reduce(cumulate, []))
   }
 
-  return { forEach, map, reduce, flatten }
+  return { length, forEach, map, reduce, flatten }
 }

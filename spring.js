@@ -8,11 +8,11 @@ function newSpring(_link) {
   }
 
   function displacement(applicationPoint, otherEnd, deltaLength) {
+		if (Math.abs(deltaLength) < MathUtil.EPSILON) return vector.zero()
     const toOutside = applicationPoint.substract(otherEnd)
     if (toOutside.length() < MathUtil.EPSILON) return vector.zero()
     return toOutside
-      .normalize()
-      .scale(deltaLength)
+			.scale(deltaLength / toOutside.length())
   }
 
   function stabilize(elapsedTimeSecond) {

@@ -8,12 +8,13 @@ function screen() {
     return canvas
   }
 
-  function getContext() { return _canvas.getContext("2d") }
   function width() { return window.innerWidth }
   function height() { return window.innerHeight }
 
   function draw(drawers) {
-    const context = getContext()
+		_canvas.width = width()
+		_canvas.height = height()
+    const context = _canvas.getContext("2d")
     context.clearRect(0, 0, width(), height())
     context.beginPath();
     drawers.forEach(drawer => drawer(context))
