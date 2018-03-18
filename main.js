@@ -2,8 +2,6 @@ function main() {
   const log = logger("main")
   log.info("Starting application...")
 
-  const vectorProjector = newVectorProjector(newUnitConverter())
-
   const generateId = (() => {
     let id = 0
     return () => {
@@ -12,24 +10,34 @@ function main() {
     }
   })()
 
-  const node1 = newNode(generateId(), vector(0.1, 0.2))
-  const node2 = newNode(generateId(), vector(1, 0.3))
-  const link1 = newLink(node1, node2)
-  screen().draw([
-    nodeDrawer(node1, vectorProjector),
-    nodeDrawer(node2, vectorProjector),
-    linkDrawer(link1, vectorProjector)
-  ])
-
 	const graph = newGraph({
 		nodes: [
-			{ id: 0, x: 0.1, y: 0.2},
-			{ id: 1, x: 1, y: 0.3}
+			{ id: 0, x: 0.1, y: 0.2 },
+			{ id: 1, x: 1, y: 0.3 }
 		],
 		links: [
 			{ start: 0, end: 1 }
 		]
 	})
+
+  const vectorProjector = newVectorProjector(newUnitConverter())
+
+  const draw = (screen => {
+		const linkDrawers = graph.links()
+			.map(link => linkDrawer(link, vectorProjector))
+		const nodeDrawers = graph.nodes()
+			.map(node => nodeDrawer(graph.nodeRef(node.id()), vectorProjector))
+		return () => screen.draw(newList([linkDrawers, nodeDrawers]).flatten())
+	})(screen())
+
+	const updateFrame = () => {
+		window.requestAnimationFrame(elapsedTimeMilliseconds => {
+			stabilizeGraph(graph, elapsedTimeMilliseconds / 1000)
+			draw()
+			updateFrame()
+		});
+	}
+	updateFrame()
 
 	log.debug(`Printing graph...`)
 	log.debug(graph.toJSON())

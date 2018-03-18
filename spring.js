@@ -22,11 +22,19 @@ function newSpring(_link) {
     return newList([
       {
         node: _link.startNode(),
-        displacement: displacement(_link.startPoint(), _link.endPoint(), deltaLength)
+        displacement: displacement(
+					_link.startPoint(),
+					_link.endPoint(),
+					deltaLength
+				)
       },
       {
         node: _link.endNode(),
-        displacement: displacement(_link.endPoint(), _link.startPoint(), deltaLength)
+        displacement: displacement(
+					_link.endPoint(),
+					_link.startPoint(),
+					deltaLength
+				)
       }
     ])
   }

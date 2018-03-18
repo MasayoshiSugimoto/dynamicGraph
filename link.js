@@ -1,20 +1,27 @@
-function newLink(_startNode, _endNode) {
+function newLink(_graph, _startNodeId, _endNodeId) {
 
-  checkNotNull(_startNode)
-  checkNotNull(_endNode)
+	checkNotNull(_graph)
+  checkNotNull(_startNodeId)
+  checkNotNull(_endNodeId)
 
-  function startNode() { return _startNode }
-  function endNode() { return _endNode }
+	function startNode() { return _graph.getNonEmptyNode(_startNodeId) }
+	function endNode() { return _graph.getNonEmptyNode(_endNodeId) }
 
-  function startPoint() { return _startNode.position() }
-  function endPoint() { return _endNode.position() }
+	function startPoint() { return startNode().position() }
+	function endPoint() { return endNode().position() }
 
 	function toJSON() {
 		return "{"
-			+ `"_startNode":${_startNode.id()},`
-			+ `"_endNode":${_endNode.id()}`
+			+ `"_startNode":${_startNodeId},`
+			+ `"_endNode":${_endNodeId}`
 			+ "}"
 	}
 
-  return { startNode, endNode, startPoint, endPoint, toJSON }
+  return {
+		startNode,
+		endNode,
+		startPoint,
+		endPoint,
+		toJSON
+	}
 }

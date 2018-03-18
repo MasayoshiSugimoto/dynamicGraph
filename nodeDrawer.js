@@ -1,13 +1,14 @@
-function nodeDrawer(_node, _vectorProjector) {
+function nodeDrawer(_nodeRef, _vectorProjector) {
 
-  checkNotNull(_node)
+  checkNotNull(_nodeRef)
   checkNotNull(_vectorProjector)
 
   const _logger = logger("nodeDrawer")
   const _radiusPixel = 10
 
   return function draw(canvasContext) {
-    const screenPosition = _vectorProjector.toDrawSpace(_node.position())
+    const screenPosition = _vectorProjector
+			.toDrawSpace(_nodeRef().position())
 
     canvasContext.beginPath();
     canvasContext.arc(

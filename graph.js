@@ -5,12 +5,22 @@ function newGraph(_graphDefinition) {
 	checkNotNull(_graphDefinition.links)
 	_graphDefinition.links.forEach(validateLink)
 
+  const instance = {
+		nodes,
+		getNode,
+		nodeRef,
+		getNonEmptyNode,
+		replaceNode,
+		links,
+		toJSON
+	}
+
 	//Create nodes and links
-	const _nodes = _graphDefinition.nodes.map(node =>
+	let _nodes = _graphDefinition.nodes.map(node =>
 		newNode(node.id, vector(node.x, node.y))
 	)
 	const _links = _graphDefinition.links.map(link =>
-		newLink(getNode(link.start), getNode(link.end))
+		newLink(instance, link.start, link.end)
 	)
 
 	function validateNode(node) {
@@ -24,18 +34,30 @@ function newGraph(_graphDefinition) {
 		checkNotNull(link.end)
 	}
 
+	function nodes() { return newList(_nodes) }
+
   function getNode(nodeId) {
-    const foundNodes = _nodes.filter(node => node.id() === nodeId)
-    if (foundNodes.length === 0) return null
-    if (foundNodes.length === 1) return _nodes[nodeId]
-    assert(true)
+		return _nodes.find(n => n.id() === nodeId)
   }
 
-  function setNode(node) {
-    _node = _nodes
-      .filter(n => n.id() !== node.id())
-      .concat([node])
-  }
+	function nodeRef(nodeId) {
+		return () => getNonEmptyNode(nodeId)
+	}
+
+	function getNonEmptyNode(nodeId) {
+		return newNode.check(getNode(nodeId))
+	}
+
+	function checkEmptyNode(node) {
+		assert(node !== undefined)
+		return node
+	}
+ 
+	function replaceNode(node) {
+		const withoutNode = _nodes.filter(n => n.id() !== node.id())
+		assert(_nodes.length - withoutNode.length === 1) 
+		_nodes = withoutNode.concat([node])
+	}
 
   function links() { return newList(_links) }
 
@@ -48,5 +70,5 @@ function newGraph(_graphDefinition) {
 			+ "}"
 	}
 
-  return { setNode, links, toJSON }
+	return instance
 }
