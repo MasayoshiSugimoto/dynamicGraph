@@ -5,6 +5,6 @@ function stabilizeGraph(graph, elapsedTimeSecond) {
     .map(spring => spring.stabilize(elapsedTimeSecond))
     .flatten()
     .forEach(({ node, displacement }) => {
-			graph.replaceNode(node.move(displacement))
+			graph.replaceNode(node().move(displacement))
 		})
 }

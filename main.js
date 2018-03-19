@@ -14,7 +14,6 @@ function main() {
 		const result = []
 		for (let i = 0; i < nodeNumber; i++) {
 			for (let j = i + 1; j < nodeNumber; j++) {
-				if (Math.random() < 0.9) continue
 				result.push({ start: i, end: j })
 			}
 		}
@@ -30,10 +29,10 @@ function main() {
 		return result
 	}
 
-	const nodeNumber = 20
+	const nodeNumber = 3
 	const graph = newGraph({
-		nodes: createNodes(20),
-		links: createLinks(20)
+		nodes: createNodes(nodeNumber),
+		links: createLinks(nodeNumber)
 	})
 
   const vectorProjector = newVectorProjector(newUnitConverter())
