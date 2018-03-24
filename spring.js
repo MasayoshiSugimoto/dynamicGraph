@@ -1,22 +1,20 @@
 function newSpring(_link) {
 
-  const stabilityLength = 1.0
-  const interpolationSpeedPourcentage = 0.5
+  const stabilityLength = 2.0
 
   function length() {
     return vector.distance(_link.startPoint(), _link.endPoint())
   }
 
   function displacement(applicationPoint, otherEnd, deltaLength) {
-		if (deltaLength < MathUtil.EPSILON) return vector.zero()
+		if (Math.abs(deltaLength) < MathUtil.EPSILON) return vector.zero()
     const toOutside = applicationPoint.substract(otherEnd)
     if (toOutside.length() < MathUtil.EPSILON) return vector.zero()
     return toOutside.scale(deltaLength / toOutside.length())
   }
 
-  function stabilize(elapsedTimeSecond) {
-    const distanceToStability = stabilityLength - length()
-    const deltaLength = (elapsedTimeSecond * interpolationSpeedPourcentage * distanceToStability)
+  function stabilize() {
+    const deltaLength = stabilityLength - length()
     return newList([
       {
         node: () => _link.startNode(),

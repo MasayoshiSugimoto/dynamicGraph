@@ -5,6 +5,11 @@ function newList(_array) {
 
 	function length() { return _array.length }
 
+	function get(index) {
+		assert(index < length())
+		return _array[index]
+	}
+
 	function forEach(lambda) {
 		_array.forEach(lambda)
 	}
@@ -25,5 +30,9 @@ function newList(_array) {
     return newList(_array.reduce(cumulate, []))
   }
 
-  return { length, forEach, map, reduce, flatten }
+	function filter(lambda) {
+		return _array.filter(lambda)
+	}
+
+  return { get, length, forEach, map, reduce, flatten, filter }
 }

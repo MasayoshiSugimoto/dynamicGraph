@@ -29,7 +29,7 @@ function main() {
 		return result
 	}
 
-	const nodeNumber = 3
+	const nodeNumber = 5
 	const graph = newGraph({
 		nodes: createNodes(nodeNumber),
 		links: createLinks(nodeNumber)
@@ -42,14 +42,16 @@ function main() {
 			.map(link => linkDrawer(link, vectorProjector))
 		const nodeDrawers = graph.nodes()
 			.map(node => nodeDrawer(graph.nodeRef(node.id()), vectorProjector))
-		return () => screen.draw(newList([linkDrawers, nodeDrawers]).flatten())
+		return () => screen.draw(newList([/*linkDrawers, */nodeDrawers])
+			.flatten())
 	})(screen())
 
+	let counter = 0
 	let lastTimeMillisecond = 0
 	const updateFrame = () => {
 		window.requestAnimationFrame(timeStampMillisecond => {
 			const elapsedTimeMillisecond = timeStampMillisecond - lastTimeMillisecond
-			const elapsedTimeSecond = Math.max(elapsedTimeMillisecond, 50) / 1000
+			const elapsedTimeSecond = Math.min(elapsedTimeMillisecond, 50) / 1000
 			lastTimeMillisecond = timeStampMillisecond
 			stabilizeGraph(graph, elapsedTimeSecond)
 			draw()
