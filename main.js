@@ -29,7 +29,7 @@ function main() {
 		return result
 	}
 
-	const nodeNumber = 5
+	const nodeNumber = 30
 	const graph = newGraph({
 		nodes: createNodes(nodeNumber),
 		links: createLinks(nodeNumber)
