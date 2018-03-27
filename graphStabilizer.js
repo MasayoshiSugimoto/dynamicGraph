@@ -5,7 +5,7 @@ function stabilizeGraph(graph, elapsedTimeSecond) {
     .map(spring => spring.stabilize())
     .flatten()
 
-	const maxForce = 2
+	const maxForce = 10
 
 	const accumulate = nodeId => {
 		const displacements = displacementsWithId
@@ -14,7 +14,7 @@ function stabilizeGraph(graph, elapsedTimeSecond) {
 		if (displacements.length === 0) return vector.zero()
 		return displacements
 			.reduce(vector.add, vector.zero())
-			.scale(10 * elapsedTimeSecond / displacements.length)
+			.scale(50 * elapsedTimeSecond * elapsedTimeSecond)
 	}
 	
 	graph.nodes()

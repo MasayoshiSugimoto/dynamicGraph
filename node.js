@@ -7,13 +7,15 @@ function newNode(_id, _position) {
 
   function id() { return _id }
   function position() { return _position }
+	function x() { return _position.x() }
+	function y() { return _position.y() }
   function withPosition(position) { return newNode(_id, position) }
   function move(vector) { return withPosition(position().add(vector)) }
 	function toJSON() {
 		return `{"_id":${_id}, "_position":${_position.toJSON()}}`
 	}
 
-  return { id, position, withPosition, move, toJSON }
+  return { id, position, x, y, withPosition, move, toJSON }
 }
 
 newNode.check = function(node) {

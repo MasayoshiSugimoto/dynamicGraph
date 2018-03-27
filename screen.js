@@ -1,4 +1,4 @@
-function screen() {
+function newScreen() {
 
   const _canvas = canvas()
 
@@ -11,6 +11,14 @@ function screen() {
   function width() { return window.innerWidth }
   function height() { return window.innerHeight }
 
+	function center() {
+		return vector(width() / 2, height() / 2)
+	}
+
+	function size() {
+		return vector(width(), height())
+	}
+
   function draw(drawers) {
 		_canvas.width = width()
 		_canvas.height = height()
@@ -20,5 +28,5 @@ function screen() {
     drawers.forEach(drawer => drawer(context))
   }
 
-  return { draw }
+  return { draw, width, height, center, size }
 }

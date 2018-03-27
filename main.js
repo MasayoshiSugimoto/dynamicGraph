@@ -20,16 +20,21 @@ function main() {
 		return result
 	}
 
+	const screen = newScreen()
 	const createNodes = (nodeNumber) => {
 		const random = () => Math.random() + 1
 		const result = []
+		const center = screen
+			.center()
+			.scale(1 / newUnitConverter().pixelPerMeter())
 		for (let i = 0; i < nodeNumber; i++) {
-			result.push({ id: i, x: random(), y: random() })
+			const v = vector.random().add(center)
+			result.push({ id: i, x: v.x(), y: v.y() })
 		}
 		return result
 	}
 
-	const nodeNumber = 30
+	const nodeNumber = 20
 	const graph = newGraph({
 		nodes: createNodes(nodeNumber),
 		links: createLinks(nodeNumber)
@@ -44,7 +49,7 @@ function main() {
 			.map(node => nodeDrawer(graph.nodeRef(node.id()), vectorProjector))
 		return () => screen.draw(newList([/*linkDrawers, */nodeDrawers])
 			.flatten())
-	})(screen())
+	})(screen)
 
 	let counter = 0
 	let lastTimeMillisecond = 0
@@ -54,6 +59,15 @@ function main() {
 			const elapsedTimeSecond = Math.min(elapsedTimeMillisecond, 50) / 1000
 			lastTimeMillisecond = timeStampMillisecond
 			stabilizeGraph(graph, elapsedTimeSecond)
+			const clamp = (min, x, max) => Math.max(min, Math.min(x, max))
+			graph.nodes().forEach(node => {
+				const screenSize = screen.size()
+					.scale(1 / newUnitConverter().pixelPerMeter())
+				graph.replaceNode(node.withPosition(vector(
+					clamp(0, node.x(), screenSize.x()),
+					clamp(0, node.y(), screenSize.y())
+				)))
+			})
 			draw()
 			updateFrame()
 		});

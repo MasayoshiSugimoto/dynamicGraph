@@ -7,7 +7,7 @@ function newSpring(_link) {
   }
 
   function displacement(applicationPoint, otherEnd, deltaLength) {
-		if (Math.abs(deltaLength) < MathUtil.EPSILON) return vector.zero()
+		if (deltaLength < MathUtil.EPSILON) return vector.zero()
     const toOutside = applicationPoint.substract(otherEnd)
     if (toOutside.length() < MathUtil.EPSILON) return vector.zero()
     return toOutside.scale(deltaLength / toOutside.length())
